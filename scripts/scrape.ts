@@ -33,6 +33,32 @@ const getLinks = async () => {
   return linkArr;
 };
 
+const getEssay = async (url: string, title: string) => {
+  let essay: PGEssay = {
+    title: "",
+    url: "",
+    date: "",
+    content: "",
+    length: $("div.content").text().length,
+    tokens: 0,
+    chunks: []
+  };
+
+  const html = await axios.get(`${BASE_URL}/${url}`);
+  const $ = cheerio.load(html.data);
+  const tables = $("table");
+
+  const text = $(tables).text();
+
+  let cleanedText = text.replace(/\s+/g, " ").replace(/\.({a-zA-Z])/g, ". $1");
+
+  tables.each((i, table) => {
+    if (i === 1) {
+      const text = $(tables).text();
+    }
+  })
+};
+
 (async () => {
   const links = await getLinks();
   console.log(links);
